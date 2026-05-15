@@ -20,7 +20,7 @@ git pull origin main || echo "git pull failed, continuing..."
 
 ## 第二步：生成行情总结报告
 
-将报告保存到 data/us_market_review/ 目录，文件名格式：YYYY-MM-DD_us_market.md（使用该交易日实际日期，美东时间）。
+将报告保存到 data/us_market_review/ 目录，文件名格式：YYYY-MM-DD_us_market.md（使用北京时间当天日期，即执行任务时的 `date +%Y-%m-%d`，勿使用美东时间）。
 
 报告结构：
 1. 市场概览（三大指数涨跌幅、成交量）
