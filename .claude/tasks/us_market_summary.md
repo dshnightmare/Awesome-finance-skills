@@ -26,23 +26,29 @@ git pull origin main || echo "git pull failed, continuing..."
 
 ```bash
 (cd .claude/skills/alphaear-news && /opt/miniconda3/bin/python3 -c "
+from scripts.database_manager import DatabaseManager
 from scripts.news_tools import NewsNowTools
-tool = NewsNowTools()
+db = DatabaseManager(db_path='/tmp/alphaear_news.db')
+tool = NewsNowTools(db)
 # 美股相关：财联社 + 华尔街见闻 + 雪球
 print(tool.get_unified_trends(['cls', 'wallstreetcn', 'xueqiu']))
 ") 2>/dev/null || echo "[跳过] 新闻热点获取失败"
 ```
 
-### 1.3 美股指数价格数据（alphaear-stock）
+### 1.3 美股个股价格数据（alphaear-stock）
+
+> 注：alphaear-stock 通过 yfinance 获取美股数据，若遭遇 Rate Limit 则跳过，用新闻来源补充。
 
 ```bash
 (cd .claude/skills/alphaear-stock && /opt/miniconda3/bin/python3 -c "
+from scripts.database_manager import DatabaseManager
 from scripts.stock_tools import StockTools
 from datetime import date, timedelta
-tool = StockTools()
+db = DatabaseManager(db_path='/tmp/alphaear_stock.db')
+tool = StockTools(db)
 end = date.today().strftime('%Y-%m-%d')
-start = (date.today() - timedelta(days=7)).strftime('%Y-%m-%d')
-for ticker, name in [('SPY','S&P500'), ('QQQ','纳斯达克'), ('DIA','道琼斯'), ('IWM','罗素2000')]:
+start = (date.today() - timedelta(days=5)).strftime('%Y-%m-%d')
+for ticker, name in [('SPY','S&P500'), ('QQQ','纳斯达克'), ('NVDA','英伟达'), ('AAPL','苹果')]:
     try:
         df = tool.get_stock_price(ticker, start, end)
         if not df.empty:
@@ -50,8 +56,10 @@ for ticker, name in [('SPY','S&P500'), ('QQQ','纳斯达克'), ('DIA','道琼斯
             prev = df.iloc[-2] if len(df) > 1 else last
             pct = (last['close']/prev['close']-1)*100
             print(f'{name}({ticker}): {last[\"close\"]:.2f}  {pct:+.2f}%')
+        else:
+            print(f'{name}: 无数据')
     except Exception as e:
-        print(f'{name}: 获取失败 ({e})')
+        print(f'{name}: 获取失败')
 ") 2>/dev/null || echo "[跳过] 美股价格数据获取失败"
 ```
 

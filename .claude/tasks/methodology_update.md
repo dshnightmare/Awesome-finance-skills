@@ -27,8 +27,10 @@ git pull origin main || echo "git pull failed, continuing..."
 
 ```bash
 (cd .claude/skills/alphaear-news && /opt/miniconda3/bin/python3 -c "
+from scripts.database_manager import DatabaseManager
 from scripts.news_tools import NewsNowTools
-tool = NewsNowTools()
+db = DatabaseManager(db_path='/tmp/alphaear_news.db')
+tool = NewsNowTools(db)
 print(tool.get_unified_trends(['cls', 'wallstreetcn', 'xueqiu']))
 ") 2>/dev/null || echo "[跳过] 新闻获取失败"
 ```

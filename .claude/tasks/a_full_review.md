@@ -36,8 +36,10 @@ git pull origin main || echo "git pull failed, continuing..."
 
 ```bash
 (cd .claude/skills/alphaear-news && /opt/miniconda3/bin/python3 -c "
+from scripts.database_manager import DatabaseManager
 from scripts.news_tools import NewsNowTools
-tool = NewsNowTools()
+db = DatabaseManager(db_path='/tmp/alphaear_news.db')
+tool = NewsNowTools(db)
 # 全天复盘：财联社 + 华尔街见闻 + 雪球（全面覆盖）
 print(tool.get_unified_trends(['cls', 'wallstreetcn', 'xueqiu']))
 ") 2>/dev/null || echo "[跳过] 新闻热点获取失败"
@@ -49,9 +51,10 @@ print(tool.get_unified_trends(['cls', 'wallstreetcn', 'xueqiu']))
 
 ```bash
 (cd .claude/skills/alphaear-stock && /opt/miniconda3/bin/python3 -c "
+from scripts.database_manager import DatabaseManager
 from scripts.stock_tools import StockTools
 from datetime import date
-tool = StockTools()
+db = DatabaseManager(db_path='/tmp/alphaear_stock.db')tool = StockTools(db)
 today = date.today().strftime('%Y-%m-%d')
 for code, name in [('sh000001','上证'),('sz399006','创业板'),('sh000300','沪深300'),('sh000905','中证500')]:
     try:
