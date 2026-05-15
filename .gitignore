@@ -35,3 +35,7 @@ wheels/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Runtime generated files
+output/
+data/*.db
