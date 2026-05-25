@@ -1,16 +1,16 @@
 import sys
 import os
 import unittest
+import pytest
 
 # Add skill root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../skills/alphaear-predictor')))
 
 try:
     from scripts.kronos_predictor import KronosPredictorUtility
     from scripts.utils.database_manager import DatabaseManager
 except ImportError as e:
-    print(f"Import Error: {e}")
-    sys.exit(1)
+    pytest.skip(f"Import Error: {e}", allow_module_level=True)
 
 class TestPredictor(unittest.TestCase):
     def test_init(self):

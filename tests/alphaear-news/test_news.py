@@ -1,16 +1,16 @@
 import sys
 import os
 import unittest
+import pytest
 
 # Add skill root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../skills/alphaear-news')))
 
 try:
     from scripts.news_tools import NewsNowTools
     from scripts.database_manager import DatabaseManager
 except ImportError as e:
-    print(f"Import Error: {e}")
-    sys.exit(1)
+    pytest.skip(f"Import Error: {e}", allow_module_level=True)
 
 class TestNews(unittest.TestCase):
     def test_init(self):

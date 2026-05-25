@@ -1,0 +1,39 @@
+# Core utilities
+loguru
+requests
+python-dotenv
+pydantic
+PyYAML
+tqdm
+pytest
+
+# Data processing
+pandas
+numpy
+matplotlib
+markdown
+
+# Finance data
+akshare
+yfinance
+
+# Charts
+pyecharts
+
+# Search & RAG
+rank-bm25
+jieba
+scikit-learn
+
+# Agent framework with search extras
+agno
+ddgs
+baidusearch
+pycountry
+
+# Deep learning (CPU-only torch for sandbox)
+torch --index-url https://download.pytorch.org/whl/cpu
+transformers
+sentence-transformers
+huggingface_hub
+einops
